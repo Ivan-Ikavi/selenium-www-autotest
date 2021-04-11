@@ -3,7 +3,7 @@ from selenium import webdriver
 from time import sleep
 
 def pytest_addoption(parser):
-    parser.addoption('--language', default= 'ru')
+    parser.addoption('--language', default= 'en')
 
 
 @pytest.fixture(scope='session')
