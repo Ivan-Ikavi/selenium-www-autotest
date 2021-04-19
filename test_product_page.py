@@ -1,11 +1,11 @@
 import pytest
-import time
 from pages.product_page import ProductPage
 from pages.basket_page import BasketPage
 from pages.base_page import BasePage
 from pages.login_page import LoginPage
 
 
+@pytest.mark.need_review
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
@@ -18,7 +18,6 @@ from pages.login_page import LoginPage
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
 def test_guest_can_add_product_to_basket(browser, link):
-    # link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
     page = ProductPage(browser, link)
     browser.delete_all_cookies()
     page.open()
@@ -32,24 +31,6 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     browser.delete_all_cookies()
     page.open()
     page.should_see_no_success_message_after_adding_to_cart()
-
-# TODO develop ProductFactory factory class for generating products via API
-# @pytest.mark.add_to_basket
-# class TestAddToBasketFromProductPage(object):
-#
-#     @pytest.fixture(scope="function", autouse=True)
-#     def setup(self):
-#         self.product = ProductFactory(title="Best book created by robot")
-#         self.link = self.product.link
-#         yield
-#         self.product.delete()
-#
-#     def test_guest_cant_see_success_message(browser):
-#         link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
-#         page = ProductPage(browser, link)
-#         browser.delete_all_cookies()
-#         page.open()
-#         page.should_see_no_success_message_on_product_page()
 
 
 def test_guest_cant_see_success_message(browser):
@@ -84,6 +65,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.should_be_login_link()
 
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
@@ -91,6 +73,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page.go_to_login_page()
 
 
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
     page = ProductPage(browser, link)
@@ -100,9 +83,11 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page.should_be_empty_basket()
 
 
+@pytest.mark.need_review
 @pytest.mark.add_to_basket
-@pytest.mark.registred_user
+@pytest.mark.registered_user
 class TestUserAddToBasketFromProductPage:
+
     @pytest.fixture(scope="function", autouse=True)
     def setup(self, browser):
         self.link = "http://selenium1py.pythonanywhere.com/catalogue/"\
@@ -110,9 +95,7 @@ class TestUserAddToBasketFromProductPage:
         page = BasePage(browser, self.link)
         page.go_to_login_page()
         login_page = LoginPage(browser, browser.current_url)
-        login = str(time.time()) + "@fakemail.com"
-        password = "wierdP@SS"
-        login_page.register_new_user(login=login, password=password)
+        login_page.register_new_user()
         yield
         page.logout()
 

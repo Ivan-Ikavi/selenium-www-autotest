@@ -1,2 +1,2 @@
 # selenium-www-autotest
-Final testproject of stepik selenium course
+Final project of stepik selenium course on UI-testing automation
